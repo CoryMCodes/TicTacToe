@@ -1,0 +1,24 @@
+#game-container {
+  display: grid;
+  grid-template: repeat(3, 150px) / repeat(3,150px);
+}
+
+.gameCell:nth-of-type(3n+2){
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.gameCell:nth-of-type(4){
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.gameCell:nth-of-type(5){
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.gameCell:nth-of-type(6){
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
