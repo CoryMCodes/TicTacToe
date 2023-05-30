@@ -3,12 +3,13 @@ const Player = (name, symbol) => {
   let isTurn = false;
  
   const getName = () => name;
+  const setName = (newName) => name = newName;  
   const getTurn = () => isTurn;
   const getSymbol = () => symbol;
 
   const setTurn = (bool) => isTurn = bool;
   
-  return {getSymbol, getName, setTurn, getTurn}
+  return {getSymbol, getName, setTurn, getTurn, setName}
 }
 
 // GameBoard Module immidiately invoked, gameboard Obj created;
@@ -169,10 +170,17 @@ const GameController = (() => {
 
     // O WIN STATES
 
-    if(spaces[0] === "O" && spaces[1] === "O" && spaces[2] === "O"){
+    if(spaces[0] === "O" && spaces[1] === "O" && spaces[2] === "O"
+    || spaces[3] === "O" && spaces[4] === "O" && spaces[5] === "O"
+    || spaces[6] === "O" && spaces[7] === "O" && spaces[8] === "O"
+    || spaces[0] === "O" && spaces[3] === "O" && spaces[6] === "O"
+    || spaces[1] === "O" && spaces[4] === "O" && spaces[7] === "O"
+    || spaces[2] === "O" && spaces[5] === "O" && spaces[8] === "O"
+    || spaces[6] === "O" && spaces[4] === "O" && spaces[2] === "O"
+    || spaces[0] === "O" && spaces[4] === "O" && spaces[8] === "O"){
       end();
     }
-
+  /*
     if(spaces[3] === "O" && spaces[4] === "O" && spaces[5] === "O"){
       end();
     }
@@ -190,16 +198,16 @@ const GameController = (() => {
     }
 
     if(spaces[2] === "O" && spaces[5] === "O" && spaces[8] === "O"){
-      end();
+      ViewController.toggleWinModal()
     }
     if(spaces[6] === "O" && spaces[4] === "O" && spaces[2] === "O"){
-      end();
+      ViewController.toggleWinModal()
     }
     if(spaces[0] === "O" && spaces[4] === "O" && spaces[8] === "O"){
-      end();
-    }
+      ViewController.toggleWinModal();
+    } */
   }  
-  return{checkWinStatus, start, getIsRunning, nextTurn, getWinState}
+  return{checkWinStatus, start, getIsRunning, nextTurn, getWinState, end}
 })();
 
 
@@ -212,6 +220,30 @@ const ViewController = (() => {
     if(e.target.id === "start-button"){
       GameController.start();
     }
+  }
+
+  changeNameHandler = (e) => {
+    if(GameController.getIsRunning()){return};
+    // get the index of player from the button that was click
+    let playerIndex = e.target.dataset.player;
+    // use that index to get the relevant player from GameBoard object
+    let selectedPlayer = GameBoard.getPlayerArray()[playerIndex];
+    // get the DOM element that contains the name
+    let playerNameEl = document.querySelector(`#player-${playerIndex}`).firstElementChild;
+    // get new name from prompt
+    let newName = prompt("Enter New Name For " + selectedPlayer.getName().toUpperCase())
+    //update the player objects name
+    selectedPlayer.setName(newName);
+    // create textNode with new name
+    let newNameText = document.createTextNode(`${newName}`);
+    // reset name DOM element
+    playerNameEl.innerText = "";
+    // append new name to Name Container El
+    playerNameEl.appendChild(newNameText);
+  }
+
+  toggleModal = () => {
+    document.querySelector("#win-modal").classList.toggle("hidden")
   }
 
   resetGameBoardView = () => {
@@ -249,6 +281,11 @@ const ViewController = (() => {
   // add event listeners immediately in IFFE
   const startButton = document.querySelector("#start-button");
   startButton.addEventListener("click", e => startButtonHandler(e))
+
+  //get change name buttons
+  const changeNameBtns = document.querySelectorAll(".nameButton"); 
+  changeNameBtns.forEach(btn => {
+  btn.addEventListener("click", e => changeNameHandler(e))})
 
 
   return {updateView}

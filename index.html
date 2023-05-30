@@ -17,14 +17,17 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div id="app">
+      <header>
+        Tic Tac Toe
+      </header>
       <div id="player-container">
-        <div id="0-player" class="player">
+        <div id="player-0" class="player">
         <div class="player-name">Player 1</div>
-        <button data-nameChange>Change</button>
+        <button class="nameButton" data-player="0">Change</button>
       </div>
-      <div id="1-player" class="player">
+      <div id="player-1" class="player">
         <div class="player-name">Player 2</div>
-        <button data-nameChange>Change</button>
+        <button class="nameButton" data-player="1">Change</button>
       </div>
       </div>
       <button id="start-button">Start</button>
@@ -38,6 +41,12 @@
         <div id="space-6" class="gameCell" data-gameSpace></div>
         <div id="space-7" class="gameCell" data-gameSpace></div>
         <div id="space-8" class="gameCell" data-gameSpace></div>
+      </div>
+    </div>
+
+    <div id="win-modal" class="hidden">
+      <div class="modal-title">
+      <button id="reset">Reset</button>
       </div>
     </div>
     
