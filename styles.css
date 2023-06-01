@@ -1,56 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500&display=swap');
+
+:root{
+  --playerOneColor: greenyellow;
+  --playerTwoColor: greenyellow;
+}
+
 html, body{
   margin: 0;
   padding: 0;
+  background-color: #000000; 
+  font-family: 'Comfortaa', cursive;
 }
+
+button:hover{
+  cursor: pointer;
+}
+
 #app{
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 #game-container {
   display: grid;
   grid-template: repeat(3, 150px) / repeat(3,150px); 
   margin-top: 2rem;
+  color: greenyellow;
+  
 }
+
 
 #player-container{
   display: flex;
-  gap: 15px;
+  gap: 200px;
   margin-bottom: 10px;
+  color: greenyellow;
+}
+
+#start-button{
+  background-color: #000000;
+  position: relative;
+  margin-top: 32px;
+  padding: 8px 16px;
+  color: greenyellow;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid greenyellow;
+}
+
+#start-button::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  border: 1px solid greenyellow;
+  border-radius: 10px;
+  box-shadow: 0 0 7px #fff,
+  0 0 10px #fff,
+  0 0 15px greenyellow,
+  /* Green glow */
+  0 0 22px greenyellow,
+  0 0 34px greenyellow,
+  0 0 46px greenyellow,
+  0 0 50px greenyellow,
+  0 0 61px greenyellow;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#start-button:hover::after{
+  opacity: 1;
 }
 
 header{
+  font-weight: 300;
   height: 150px;
-  background: lightcyan;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 4rem;
+  color: greenyellow;
+  text-shadow:
+  /* White glow */
+  0 0 7px #fff,
+  0 0 10px #fff,
+  0 0 21px greenyellow,
+  /* Green glow */
+  0 0 42px greenyellow,
+  0 0 82px greenyellow,
+  0 0 92px greenyellow,
+  0 0 102px greenyellow,
+  0 0 151px greenyellow;
 }
+
 .gameCell{
   text-align: center;
+  position: relative;
   padding-top: 33%;
   font-size: 3rem;
+  box-shadow: 0 0 0rem #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  
+  /*box-shadow: 0 0 .2rem #fff,
+  0 0 .2rem #fff,
+  0 0 2rem greenyellow,
+  0 0 0.8rem greenyellow,
+  0 0 2.8rem greenyellow,
+  inset 0 0 1.3rem greenyellow; */
 }
+
+.gameCellGlow{
+  box-shadow: 0 0 .2rem #fff,
+  0 0 .2rem #fff,
+  0 0 2rem greenyellow,
+  0 0 0.8rem greenyellow,
+  0 0 2.8rem greenyellow,
+  inset 0 0 1.3rem greenyellow; 
+}
+
 .gameCell:nth-of-type(3n+2){
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-left: 2px solid greenyellow;
+  border-right: 2px solid greenyellow;
 }
 
 .gameCell:nth-of-type(4){
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 2px solid greenyellow;
+  border-bottom: 2px solid greenyellow;
 }
 
 .gameCell:nth-of-type(5){
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 2px solid greenyellow;
+  border-bottom: 2px solid greenyellow;
 }
 
 .gameCell:nth-of-type(6){
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 2px solid greenyellow;
+  border-bottom: 2px solid greenyellow;  
+}
+
+.player{
+  font-size: 1.5rem;
 }
 
 #win-modal{
@@ -69,7 +163,7 @@ header{
   font-family: "Roboto Mono", monospace;
 }
 
-#reset{
+#close-win-modal{
   font-family: "Roboto Mono", monospace;
   background-color: white;
   border: solid black 2px;
@@ -79,7 +173,7 @@ header{
   font-size: 1em;
 }
 
-#reset:hover{
+#close-win-modal:hover{
   background-color: #cdcdcdd3;
   cursor: pointer;
 }

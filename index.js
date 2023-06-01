@@ -23,10 +23,11 @@ const GameBoard = (() => {
   playerArray.push(playerOne);
   playerArray.push(playerTwo);
 
-  reset = () => {
+  const reset = () => {
     console.log("game board reset")
     spaces = [];
     ViewController.updateView(spaces);
+    ViewController.toggleBoardGlow();
   }
 
   const getSpace = (num) => spaces[num]
@@ -51,7 +52,7 @@ const GameBoard = (() => {
   }
 
    // Game Controller sets board state and checks win status --> RENAME THIS
-   spaceClickLogicHandler = (e) => {
+   const spaceClickLogicHandler = (e) => {
     // get index of clicked space
     const spaceIndex = e.target.id.split("-")[1];
     if(GameController.getIsRunning()){
@@ -86,10 +87,11 @@ const GameController = (() => {
   let winState = false;
   
   // starts the game changes isRunning variable
-  start = () => {
+  const start = () => {
     console.log("start runs")
     if(!isRunning){
-     GameBoard.getPlayerArray()[0].setTurn(true)
+     GameBoard.getPlayerArray()[0].setTurn(true);
+     GameBoard.getPlayerArray()[1].setTurn(false);
      isRunning = true;
      winState = false;
     }
@@ -100,7 +102,7 @@ const GameController = (() => {
 
   
   //ends game loop changes isRunning
-  end = () => {
+  const end = () => {
     console.log("Game Ends")
     winState = true;
     isRunning = false;
@@ -108,7 +110,7 @@ const GameController = (() => {
   }
 
   // Toggles Turns
-  nextTurn = () => {
+  const nextTurn = () => {
     console.log("next turn")
     GameBoard.getPlayerArray().forEach(player => {
       player.setTurn(!player.getTurn())
@@ -118,58 +120,30 @@ const GameController = (() => {
 
 
   //returns game run state;
-  getIsRunning = () => isRunning;
+  const getIsRunning = () => isRunning;
 
   //returns winState
-  getWinState = () => winState;
+  const getWinState = () => winState;
 
-  //updates winState
-  setWinState = (bool) => {
-    winstate = bool;
-  }
   //check win
   // [012] [345] [678] [036] [147] [258] [642] [048]
-  checkWinStatus = () => {
+  const checkWinStatus = () => {
     let spaces = GameBoard.getSpacesArray();
     console.log(spaces)
    
-
-    // ?? how to refactor
    // X WIN STATES
-    if(spaces[0] === "X" && spaces[1] === "X" && spaces[2] === "X"){
-      end();
-    }
-
-    if(spaces[3] === "X" && spaces[4] === "X" && spaces[5] === "X"){
-      end();
-    }
-
-    if(spaces[6] === "X" && spaces[7] === "X" && spaces[8] === "X"){
-      end();
-    }
-
-    if(spaces[0] === "X" && spaces[3] === "X" && spaces[6] === "X"){
-      end();
-    }
-
-    if(spaces[1] === "X" && spaces[4] === "X" && spaces[7] === "X"){
-      end();
-    }
-
-    if(spaces[2] === "X" && spaces[5] === "X" && spaces[8] === "X"){
-      end();
-    }
-
-    if(spaces[6] === "X" && spaces[4] === "X" && spaces[2] === "X"){
-      end();
-    }
-
-    if(spaces[0] === "X" && spaces[4] === "X" && spaces[8] === "X"){
+    if(spaces[0] === "X" && spaces[1] === "X" && spaces[2] === "X"
+    || spaces[3] === "X" && spaces[4] === "X" && spaces[5] === "X"
+    || spaces[6] === "X" && spaces[7] === "X" && spaces[8] === "X"
+    || spaces[0] === "X" && spaces[3] === "X" && spaces[6] === "X"
+    || spaces[1] === "X" && spaces[4] === "X" && spaces[7] === "X"
+    || spaces[2] === "X" && spaces[5] === "X" && spaces[8] === "X"
+    || spaces[6] === "X" && spaces[4] === "X" && spaces[2] === "X"
+    || spaces[0] === "X" && spaces[4] === "X" && spaces[8] === "X"){
       end();
     }
 
     // O WIN STATES
-
     if(spaces[0] === "O" && spaces[1] === "O" && spaces[2] === "O"
     || spaces[3] === "O" && spaces[4] === "O" && spaces[5] === "O"
     || spaces[6] === "O" && spaces[7] === "O" && spaces[8] === "O"
@@ -180,33 +154,8 @@ const GameController = (() => {
     || spaces[0] === "O" && spaces[4] === "O" && spaces[8] === "O"){
       end();
     }
-  /*
-    if(spaces[3] === "O" && spaces[4] === "O" && spaces[5] === "O"){
-      end();
-    }
+  }
 
-    if(spaces[6] === "O" && spaces[7] === "O" && spaces[8] === "O"){
-      end();
-    }
-
-    if(spaces[0] === "O" && spaces[3] === "O" && spaces[6] === "O"){
-      end();
-    }
-
-    if(spaces[1] === "O" && spaces[4] === "O" && spaces[7] === "O"){
-      end();
-    }
-
-    if(spaces[2] === "O" && spaces[5] === "O" && spaces[8] === "O"){
-      ViewController.toggleWinModal()
-    }
-    if(spaces[6] === "O" && spaces[4] === "O" && spaces[2] === "O"){
-      ViewController.toggleWinModal()
-    }
-    if(spaces[0] === "O" && spaces[4] === "O" && spaces[8] === "O"){
-      ViewController.toggleWinModal();
-    } */
-  }  
   return{checkWinStatus, start, getIsRunning, nextTurn, getWinState, end}
 })();
 
@@ -215,14 +164,26 @@ const GameController = (() => {
 // VIEW CONTROLLER IFFE instantiates imediately. 
 const ViewController = (() => {
   
+  const toggleBoardGlow = () => {
+    const gameCells = document.querySelectorAll(".gameCell");
+    if(GameController.getIsRunning()){
+      gameCells.forEach(cell => {
+        cell.classList.add("gameCellGlow")
+      })}
+    else{
+        gameCells.forEach(cell => {
+          cell.classList.remove("gameCellGlow");
+        })}
+  }
   // button starts games
-  startButtonHandler = (e) => {
+  const startButtonHandler = (e) => {
     if(e.target.id === "start-button"){
       GameController.start();
+      toggleBoardGlow();
     }
   }
 
-  changeNameHandler = (e) => {
+  const changeNameHandler = (e) => {
     if(GameController.getIsRunning()){return};
     // get the index of player from the button that was click
     let playerIndex = e.target.dataset.player;
@@ -242,11 +203,13 @@ const ViewController = (() => {
     playerNameEl.appendChild(newNameText);
   }
 
-  toggleModal = () => {
+  const toggleModal = (message) => {
+    let gameOverMessage = document.createTextNode(message);
     document.querySelector("#win-modal").classList.toggle("hidden")
+    document.querySelector("#win-modal").firstChild.appendChild(gameOverMessage);
   }
 
-  resetGameBoardView = () => {
+  const resetGameBoardView = () => {
     let spaceContainer = document.querySelector("#game-container");
       for (let i = 0; i < spaceContainer.children.length; i++){
         let child = spaceContainer.children[i];
@@ -254,7 +217,7 @@ const ViewController = (() => {
       }
   }
 
-  updateGameBoardView = (arr) => {
+  const updateGameBoardView = (arr) => {
     arr.forEach((space, index) => {
       let spaceText = document.querySelector(`#space-${index}`);
       if(space){
@@ -266,16 +229,12 @@ const ViewController = (() => {
   } 
 
 // takes arr of spaces containing "X", "O", or empty index;
-  updateView = (arr) => {
+  const updateView = (arr) => {
     if(arr.length){
       updateGameBoardView(arr)
     }else{
       resetGameBoardView();
     }
-  }
-
-  winView = (array) => {
-
   }
 
   // add event listeners immediately in IFFE
@@ -286,7 +245,9 @@ const ViewController = (() => {
   const changeNameBtns = document.querySelectorAll(".nameButton"); 
   changeNameBtns.forEach(btn => {
   btn.addEventListener("click", e => changeNameHandler(e))})
+  
+  const resetButton = document.querySelector("#close-win-modal");
+  resetButton.addEventListener("click", toggleModal)
 
-
-  return {updateView}
+  return {updateView, toggleModal, toggleBoardGlow}
 })()
