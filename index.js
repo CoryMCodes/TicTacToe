@@ -165,9 +165,10 @@ const GameController = (() => {
 const ViewController = (() => {
   // Get the root element
   const r = document.querySelector(':root');
-
   //Get game color settings
   const gameSettings = document.getElementById("game-color-select");
+  // set inital css game color value
+  r.style.setProperty("--gameThemeColor", gameSettings.value);
   // Change game theme
   gameSettings.addEventListener("change", () => {
     r.style.setProperty("--gameThemeColor", gameSettings.value)
@@ -176,6 +177,25 @@ const ViewController = (() => {
   const playerOneNameSetting = document.getElementById("playerOne-name-change");
   playerOneNameSetting.placeholder = GameBoard.getPlayerArray()[0].getName();
   
+  //set player Two name Placeholder
+  const playerTwoNameSetting = document.getElementById("playerTwo-name-change");
+  playerTwoNameSetting.placeholder = GameBoard.getPlayerArray()[1].getName();
+  
+  const playerOneSettings = document.getElementById("playerOne-color-select");
+  // set inital css p1 color value
+  r.style.setProperty("--playerOneColor", playerOneSettings.value);
+  // Change p1 theme
+  playerOneSettings.addEventListener("change", () => {
+    r.style.setProperty("--playerOneColor", playerOneSettings.value)
+  })
+
+  const playerTwoSettings = document.getElementById("playerTwo-color-select");
+  // set inital css p1 color value
+  r.style.setProperty("--playerTwoColor", playerTwoSettings.value);
+  // Change p1 theme
+  playerTwoSettings.addEventListener("change", () => {
+    r.style.setProperty("--playerTwoColor", playerTwoSettings.value)
+  })
 
   const toggleBoardGlow = () => {
     const gameCells = document.querySelectorAll(".gameCell");
@@ -202,30 +222,6 @@ const ViewController = (() => {
     }
   }
 
-  const changeNameHandler = (e) => {
-    if(GameController.getIsRunning()){return};
-    // get the index of player from the button that was click
-    let playerIndex = e.target.dataset.player;
-    // use that index to get the relevant player from GameBoard object
-    let selectedPlayer = GameBoard.getPlayerArray()[playerIndex];
-    // get the DOM element that contains the name
-    let playerNameEl = document.querySelector(`#player-${playerIndex}`).firstElementChild;
-    // get new name from prompt
-    let newName = prompt("Enter New Name For " + selectedPlayer.getName().toUpperCase());
-    if(newName !== null){
-      //update the player objects name
-      selectedPlayer.setName(newName);
-    }
-    //update the player objects name
-    selectedPlayer.setName(newName);
-    // create textNode with new name
-    let newNameText = document.createTextNode(`${newName}`);
-    // reset name DOM element
-    playerNameEl.innerText = "";
-    // append new name to Name Container El
-    playerNameEl.appendChild(newNameText);
-  }
-
   const toggleModal = (message) => {
     let gameOverMessage = document.createTextNode(message);
     document.querySelector("#win-modal").classList.toggle("hidden")
@@ -245,8 +241,8 @@ const ViewController = (() => {
       let spaceText = document.querySelector(`#space-${index}`);
       if(space){
         spaceText.innerText = space;
-        if(space === "X") { spaceText.style.color = "var(--playerOneColor)"; }
-        if(space === "O") { spaceText.style.color = "var(--playerTwoColor"; }
+        if(space === "X") { spaceText.classList.add("player-one-color") }
+        if(space === "O") { spaceText.classList.add("player-two-color") }
       }else{
         spaceText.innerText = "";
       }
@@ -276,6 +272,31 @@ const ViewController = (() => {
 
   const settingsButton = document.getElementById("settings-button");
   settingsButton.addEventListener("click", settingsButtonHandler);
+
+  const settingsCloseButton = document.getElementById("settings-close");
+  settingsCloseButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("settings-modal").classList.add("hidden")
+    // Player One Name Change
+    let newPlayerOneName = document.getElementById("playerOne-name-change").value;
+    let playerOneNameEl = document.querySelector(`#player-0`).firstElementChild;
+    if(newPlayerOneName){
+      GameBoard.getPlayerArray()[0].setName(newPlayerOneName);
+      let newPOneNameText = document.createTextNode(`${newPlayerOneName}`);
+      playerOneNameEl.innerText = "";
+      playerOneNameEl.appendChild(newPOneNameText);
+    }
+
+    //Player Two Name Change
+    let newPlayerTwoName = document.getElementById("playerTwo-name-change").value;
+    let playerTwoNameEl = document.querySelector(`#player-1`).firstElementChild;
+    if(newPlayerTwoName){
+      GameBoard.getPlayerArray()[1].setName(newPlayerTwoName);
+      let newPTwoNameText = document.createTextNode(`${newPlayerTwoName}`);
+      playerTwoNameEl.innerText = "";
+      playerTwoNameEl.appendChild(newPTwoNameText);
+    }
+  })
 
 ;
   return {updateView, toggleModal, toggleBoardGlow}

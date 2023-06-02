@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500&display=swap');
 
 :root{
-  --playerOneColor: greenyellow;
-  --playerTwoColor: #FF3131;
-  --gameThemeColor: greenyellow;
+  --playerOneColor: ;
+  --playerTwoColor: ;
+  --gameThemeColor: ;
 }
 
 html, body{
@@ -157,12 +157,6 @@ header{
   box-shadow: 0 0 0rem #fff;
   transition: box-shadow 0.3s ease-in-out;
   
-  /*box-shadow: 0 0 .2rem #fff,
-  0 0 .2rem #fff,
-  0 0 2rem greenyellow,
-  0 0 0.8rem greenyellow,
-  0 0 2.8rem greenyellow,
-  inset 0 0 1.3rem greenyellow; */
 }
 
 .gameCellGlow{
@@ -198,12 +192,22 @@ header{
   font-size: 1.5rem;
 }
 
-#player-0{
-  color: var(--playerOneColor)
+.player-one-color{
+  color: var(--playerOneColor);
+  text-shadow: 0 0 .2rem #fff,
+  0 0 .2rem #fff,
+  0 0 2rem var(--playerOneColor),
+  0 0 0.8rem var(--playerOneColor),
+  0 0 2.8rem var(--playerOneColor);
 }
 
-#player-1{
-  color: var(--playerTwoColor)
+.player-two-color{
+  color: var(--playerTwoColor);
+  text-shadow: 0 0 .2rem #fff,
+  0 0 .2rem #fff,
+  0 0 2rem var(--playerTwoColor),
+  0 0 0.8rem var(--playerTwoColor),
+  0 0 2.8rem var(--playerTwoColor);
 }
 
 #win-modal{

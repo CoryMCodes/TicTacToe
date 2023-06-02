@@ -23,10 +23,10 @@
         <div id="settings-button" class="material-symbols-outlined settings">settings</div>
       </header>
       <div id="player-container">
-        <div id="player-0" class="player">
+        <div id="player-0" class="player player-one-color">
         <div class="player-name">Player 1</div>
         </div>
-      <div id="player-1" class="player">
+      <div id="player-1" class="player player-two-color">
         <div class="player-name">Player 2</div>
       </div>
       </div>
@@ -58,9 +58,9 @@
           <div class="color-form">
             <label for="game-color-select">Color</label>
             <select name="colors" id="game-color-select">
+              <option value="#adff2f">Green</option>
               <option value="#FF3131">Red</option>
               <option value="#83EEFF">Blue</option>
-              <option selected value="#adff2f">Green</option>
               <option value="#FFF01F">Yellow</option>
               <option value="#FF10F0">Pink</option>
               <option value="#7d12ff">Purple</option>
@@ -91,7 +91,7 @@
             <input type="text" name="name" id="playerTwo-name-change">
           </div>
           <div class="color-form">
-            <label for="playerTwocolor-select">Color</label>
+            <label for="playerTwo-color-select">Color</label>
             <select name="colors" id="playerTwo-color-select">
               <option selected value="#FF3131">Red</option>
               <option value="#83EEFF">Blue</option>
@@ -102,7 +102,7 @@
             </select>
           </div>
         </fieldset>
-        <button>Close</button>
+        <button id="settings-close">Close</button>
       </form>
 
     </div>
