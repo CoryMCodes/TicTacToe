@@ -10,6 +10,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -18,16 +19,15 @@
     <![endif]-->
     <div id="app">
       <header>
-        Tic Tac Toe
+        <div class="page-title">Tic Tac Toe</div>
+        <div id="settings-button" class="material-symbols-outlined settings">settings</div>
       </header>
       <div id="player-container">
         <div id="player-0" class="player">
         <div class="player-name">Player 1</div>
-        <button class="nameButton" data-player="0">Change</button>
-      </div>
+        </div>
       <div id="player-1" class="player">
         <div class="player-name">Player 2</div>
-        <button class="nameButton" data-player="1">Change</button>
       </div>
       </div>
       <div id="game-container" >
@@ -48,6 +48,62 @@
       <div class="modal-info">
       <button id="close-win-modal">Close</button>
       </div>
+    </div>
+
+    <div id="settings-modal" class="hidden">
+      <h3 class="settings-title">Settings</h3>
+      <form id="playerSettings">
+        <fieldset>
+          <legend>Game</legend>
+          <div class="color-form">
+            <label for="game-color-select">Color</label>
+            <select name="colors" id="game-color-select">
+              <option value="#FF3131">Red</option>
+              <option value="#83EEFF">Blue</option>
+              <option selected value="#adff2f">Green</option>
+              <option value="#FFF01F">Yellow</option>
+              <option value="#FF10F0,">Pink</option>
+              <option value="#7d12ff">Purple</option>
+            </select>
+        </fieldset>
+        <fieldset>
+          <legend>Player 1</legend>
+          <div class="name-form">
+            <label for="playerOne-name-change">Name:</label>
+            <input type="text" name="name" id="playerOne-name-change">
+          </div>
+          <div class="color-form">
+            <label for="playerOne-color-select">Color</label>
+            <select name="colors" id="playerOne-color-select">
+              <option value="#FF3131">Red</option>
+              <option value="#83EEFF">Blue</option>
+              <option selected value="#adff2f">Green</option>
+              <option value="#FFF01F">Yellow</option>
+              <option value="#FF10F0,">Pink</option>
+              <option value="#7d12ff">Purple</option>
+            </select>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Player 2</legend>
+          <div class="name-form">
+            <label for="playerTwo-name-change">Name:</label>
+            <input type="text" name="name" id="playerTwo-name-change">
+          </div>
+          <div class="color-form">
+            <label for="playerTwocolor-select">Color</label>
+            <select name="colors" id="playerTwo-color-select">
+              <option selected value="#FF3131">Red</option>
+              <option value="#83EEFF">Blue</option>
+              <option value="#adff2f">Green</option>
+              <option value="#FFF01F">Yellow</option>
+              <option value="#FF10F0,">Pink</option>
+              <option value="#7d12ff">Purple</option>
+            </select>
+          </div>
+        </fieldset>
+      </form>
+
     </div>
     
     <script src="./index.js" async defer></script>

@@ -183,6 +183,12 @@ const ViewController = (() => {
     }
   }
 
+  const settingsButtonHandler = (e) => {
+    if(e.target.id === "settings-button"){
+      document.getElementById("settings-modal").classList.remove("hidden")
+    }
+  }
+
   const changeNameHandler = (e) => {
     if(GameController.getIsRunning()){return};
     // get the index of player from the button that was click
@@ -192,7 +198,11 @@ const ViewController = (() => {
     // get the DOM element that contains the name
     let playerNameEl = document.querySelector(`#player-${playerIndex}`).firstElementChild;
     // get new name from prompt
-    let newName = prompt("Enter New Name For " + selectedPlayer.getName().toUpperCase())
+    let newName = prompt("Enter New Name For " + selectedPlayer.getName().toUpperCase());
+    if(newName !== null){
+      //update the player objects name
+      selectedPlayer.setName(newName);
+    }
     //update the player objects name
     selectedPlayer.setName(newName);
     // create textNode with new name
@@ -221,7 +231,9 @@ const ViewController = (() => {
     arr.forEach((space, index) => {
       let spaceText = document.querySelector(`#space-${index}`);
       if(space){
-        spaceText.innerText = space; 
+        spaceText.innerText = space;
+        if(space === "X") { spaceText.style.color = "var(--playerOneColor)"; }
+        if(space === "O") { spaceText.style.color = "var(--playerTwoColor"; }
       }else{
         spaceText.innerText = "";
       }
@@ -246,8 +258,12 @@ const ViewController = (() => {
   changeNameBtns.forEach(btn => {
   btn.addEventListener("click", e => changeNameHandler(e))})
   
-  const resetButton = document.querySelector("#close-win-modal");
+  const resetButton = document.getElementById("close-win-modal");
   resetButton.addEventListener("click", toggleModal)
 
+  const settingsButton = document.getElementById("settings-button");
+  settingsButton.addEventListener("click", settingsButtonHandler);
+
+;
   return {updateView, toggleModal, toggleBoardGlow}
 })()
