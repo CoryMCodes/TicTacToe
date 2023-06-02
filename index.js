@@ -18,8 +18,8 @@ const GameBoard = (() => {
   let playerArray = [];
 
   // fill default player array 
-  const playerOne = Player("player1", "X");
-  const playerTwo = Player("Player2", "O");
+  const playerOne = Player("Player 1", "X");
+  const playerTwo = Player("Player 2", "O");
   playerArray.push(playerOne);
   playerArray.push(playerTwo);
 
@@ -163,7 +163,20 @@ const GameController = (() => {
 
 // VIEW CONTROLLER IFFE instantiates imediately. 
 const ViewController = (() => {
+  // Get the root element
+  const r = document.querySelector(':root');
+
+  //Get game color settings
+  const gameSettings = document.getElementById("game-color-select");
+  // Change game theme
+  gameSettings.addEventListener("change", () => {
+    r.style.setProperty("--gameThemeColor", gameSettings.value)
+  })
+  // set player one name placeholder
+  const playerOneNameSetting = document.getElementById("playerOne-name-change");
+  playerOneNameSetting.placeholder = GameBoard.getPlayerArray()[0].getName();
   
+
   const toggleBoardGlow = () => {
     const gameCells = document.querySelectorAll(".gameCell");
     if(GameController.getIsRunning()){
