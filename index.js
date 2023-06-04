@@ -1,7 +1,7 @@
 //Player Factory Function
-const Player = (name, symbol) => {
+const Player = (id, name, symbol) => {
   let isTurn = false;
- 
+  const getID = () => id;
   const getName = () => name;
   const setName = (newName) => name = newName;  
   const getTurn = () => isTurn;
@@ -9,7 +9,7 @@ const Player = (name, symbol) => {
 
   const setTurn = (bool) => isTurn = bool;
   
-  return {getSymbol, getName, setTurn, getTurn, setName}
+  return {getSymbol, getName, setTurn, getTurn, setName, getID}
 }
 
 // GameBoard Module immidiately invoked, gameboard Obj created;
@@ -18,8 +18,8 @@ const GameBoard = (() => {
   let playerArray = [];
 
   // fill default player array 
-  const playerOne = Player("Player 1", "X");
-  const playerTwo = Player("Player 2", "O");
+  const playerOne = Player(0, "Player 1", "X");
+  const playerTwo = Player(1, "Player 2", "O");
   playerArray.push(playerOne);
   playerArray.push(playerTwo);
 
@@ -104,6 +104,7 @@ const GameController = (() => {
   //ends game loop changes isRunning
   const end = () => {
     console.log("Game Ends")
+    ViewController.toggleModal(GameBoard.getCurrentPlayer());
     winState = true;
     isRunning = false;
     GameBoard.reset();
@@ -141,6 +142,7 @@ const GameController = (() => {
     || spaces[6] === "X" && spaces[4] === "X" && spaces[2] === "X"
     || spaces[0] === "X" && spaces[4] === "X" && spaces[8] === "X"){
       end();
+
     }
 
     // O WIN STATES
@@ -190,9 +192,9 @@ const ViewController = (() => {
   })
 
   const playerTwoSettings = document.getElementById("playerTwo-color-select");
-  // set inital css p1 color value
+  // set inital css p2 color value
   r.style.setProperty("--playerTwoColor", playerTwoSettings.value);
-  // Change p1 theme
+  // Change p2 theme
   playerTwoSettings.addEventListener("change", () => {
     r.style.setProperty("--playerTwoColor", playerTwoSettings.value)
   })
@@ -222,17 +224,46 @@ const ViewController = (() => {
     }
   }
 
-  const toggleModal = (message) => {
-    let gameOverMessage = document.createTextNode(message);
-    document.querySelector("#win-modal").classList.toggle("hidden")
-    document.querySelector("#win-modal").firstChild.appendChild(gameOverMessage);
+  const toggleModal = (player) => {
+    // get elements
+    const modal = document.querySelector("#win-modal");
+    let modalTextEl = document.querySelector(".modal-info");
+  
+    if(modal.classList.contains("hidden")){
+      modal.classList.toggle("hidden")
+        // build win message
+      let message = `${player.getName()} Wins!`;
+      let gameOverMessage = document.createTextNode(message);
+      modalTextEl.appendChild(gameOverMessage);
+
+    // set winner colors
+    if(player.getID() === 0){
+      modal.style.border = "4px solid var(--playerOneColor)";
+      modal.style.color = "var(--playerOneColor)"
+      resetButton.style.border = "2px solid var(--playerOneColor)";
+      resetButton.style.color = "var(--playerOneColor)"
+        } 
+    if(player.getID() === 1){
+      modal.style.border = "4px solid var(--playerTwoColor)";
+      modal.style.color = "var(--playerTwoColor)";
+      resetButton.style.border = "2px solid var(--playerTwoColor)"
+      resetButton.style.color = "var(--playerTwoColor)"
+    }   
+    }else{
+      modal.classList.toggle("hidden");
+      modalTextEl.innerText = "";
+    }
   }
 
   const resetGameBoardView = () => {
     let spaceContainer = document.querySelector("#game-container");
       for (let i = 0; i < spaceContainer.children.length; i++){
         let child = spaceContainer.children[i];
+        // reset symbol text
         child.innerText = "";
+        //reset color classes for symbols
+        child.classList.contains("player-one-color") ? child.classList.remove("player-one-color") : null;
+        child.classList.contains("player-two-color") ? child.classList.remove("player-two-color") : null;
       }
   }
 
