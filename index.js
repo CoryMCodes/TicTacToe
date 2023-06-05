@@ -305,6 +305,7 @@ const ViewController = (() => {
   settingsButton.addEventListener("click", settingsButtonHandler);
 
   const settingsCloseButton = document.getElementById("settings-close");
+  // add color to settings close;
   settingsCloseButton.addEventListener("click", (e) => {
     e.preventDefault();
     document.getElementById("settings-modal").classList.add("hidden")
