@@ -102,10 +102,17 @@ const GameController = (() => {
 
   
   //ends game loop changes isRunning
-  const end = () => {
+  const _endWin = () => {
     console.log("Game Ends")
     ViewController.toggleModal(GameBoard.getCurrentPlayer());
     winState = true;
+    isRunning = false;
+    GameBoard.reset();
+  }
+
+  const _endTie = () => {
+    console.log("tie game runs")
+    ViewController.toggleModal();
     isRunning = false;
     GameBoard.reset();
   }
@@ -130,7 +137,9 @@ const GameController = (() => {
   // [012] [345] [678] [036] [147] [258] [642] [048]
   const checkWinStatus = () => {
     let spaces = GameBoard.getSpacesArray();
+    console.log(typeof spaces[1] == 'undefined')
     console.log(spaces)
+
    
    // X WIN STATES
     if(spaces[0] === "X" && spaces[1] === "X" && spaces[2] === "X"
@@ -141,10 +150,10 @@ const GameController = (() => {
     || spaces[2] === "X" && spaces[5] === "X" && spaces[8] === "X"
     || spaces[6] === "X" && spaces[4] === "X" && spaces[2] === "X"
     || spaces[0] === "X" && spaces[4] === "X" && spaces[8] === "X"){
-      end();
+      _endWin();
+      return;
 
     }
-
     // O WIN STATES
     if(spaces[0] === "O" && spaces[1] === "O" && spaces[2] === "O"
     || spaces[3] === "O" && spaces[4] === "O" && spaces[5] === "O"
@@ -154,11 +163,27 @@ const GameController = (() => {
     || spaces[2] === "O" && spaces[5] === "O" && spaces[8] === "O"
     || spaces[6] === "O" && spaces[4] === "O" && spaces[2] === "O"
     || spaces[0] === "O" && spaces[4] === "O" && spaces[8] === "O"){
-      end();
+      _endWin();
+      return;
     }
+    
+    if(spaces.length === 9
+      && typeof spaces[0] != 'undefined'
+      && typeof spaces[1] != 'undefined'
+      && typeof spaces[2] != 'undefined'
+      && typeof spaces[3] != 'undefined'
+      && typeof spaces[4] != 'undefined'
+      && typeof spaces[5] != 'undefined'
+      && typeof spaces[6] != 'undefined'
+      && typeof spaces[7] != 'undefined'
+      && typeof spaces[8] != 'undefined'){
+        _endTie();
+        return;
+      }
+
   }
 
-  return{checkWinStatus, start, getIsRunning, nextTurn, getWinState, end}
+  return{checkWinStatus, start, getIsRunning, nextTurn, getWinState}
 })();
 
 
@@ -228,27 +253,41 @@ const ViewController = (() => {
     // get elements
     const modal = document.querySelector("#win-modal");
     let modalTextEl = document.querySelector(".modal-info");
+    let message;
   
+    // IF MODAL IS HIDDEN
     if(modal.classList.contains("hidden")){
       modal.classList.toggle("hidden")
-        // build win message
-      let message = `${player.getName()} Wins!`;
-      let gameOverMessage = document.createTextNode(message);
-      modalTextEl.appendChild(gameOverMessage);
-
-    // set winner colors
-    if(player.getID() === 0){
-      modal.style.border = "4px solid var(--playerOneColor)";
-      modal.style.color = "var(--playerOneColor)"
-      resetButton.style.border = "2px solid var(--playerOneColor)";
-      resetButton.style.color = "var(--playerOneColor)"
-        } 
-    if(player.getID() === 1){
-      modal.style.border = "4px solid var(--playerTwoColor)";
-      modal.style.color = "var(--playerTwoColor)";
-      resetButton.style.border = "2px solid var(--playerTwoColor)"
-      resetButton.style.color = "var(--playerTwoColor)"
-    }   
+      // IF PLAYER WAS PASSED TO METHOD
+      if(player){
+         message = `${player.getName()} Wins!`;
+        let gameOverMessage = document.createTextNode(message);
+        modalTextEl.appendChild(gameOverMessage);
+        // set winner colors
+        if(player.getID() === 0){
+          modal.style.border = "4px solid var(--playerOneColor)";
+          modal.style.color = "var(--playerOneColor)"
+          resetButton.style.border = "2px solid var(--playerOneColor)";
+          resetButton.style.color = "var(--playerOneColor)"
+            } 
+        if(player.getID() === 1){
+          modal.style.border = "4px solid var(--playerTwoColor)";
+          modal.style.color = "var(--playerTwoColor)";
+          resetButton.style.border = "2px solid var(--playerTwoColor)"
+          resetButton.style.color = "var(--playerTwoColor)"
+        }   
+        // ELSE PLAYER WAS PASSED TO METHOD
+      }else{
+        message = "Cat's Game!";
+        let tieMessage = document.createTextNode(message);
+        modalTextEl.appendChild(tieMessage);
+        // set modal color to game color
+        modal.style.border = "4px solid var(--gameThemeColor)";
+        modal.style.color = "var(--gameThemeColor)";
+        resetButton.style.border = "2px solid var(--gameThemeColor)"
+        resetButton.style.color = "var(--gameThemeColor)"
+      }
+    // ELSE MODAL IS HIDDEN
     }else{
       modal.classList.toggle("hidden");
       modalTextEl.innerText = "";
